@@ -1,4 +1,3 @@
-from main import Term
 from symbols_table import *
 
 

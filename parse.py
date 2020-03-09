@@ -1,4 +1,4 @@
-from main import Term
+from term import Term
 from symbols_table import *
 import numbers
 
@@ -14,7 +14,8 @@ END = 'END OF TOKEN SEQUENCE'
 
 
 def no_nulls(term1: Term) -> bool:
-    """if an invalid expression is provided 'None's will pop up in the tree"""
+    """returns True if there are no None's in term labels.
+    if an invalid expression is parsed 'None's will pop up in the tree"""
     if term1 is None:
         return False
     else:
@@ -47,28 +48,38 @@ class Parser:
             return S
         else:
             raise InvalidExpression("Provided expression is not legal.")
+    #
+    # def parse_binary_operation_recursive(self, operations, parse_left, parse_right) -> Term:
+    #     """Unused.
+    #     Function used to parse expression of type: S -> A | A+S. so a right recursive one.
+    #     Changed this when realized it parses - and / wrong
+    #     as those are only left associative"""
+    #     left = parse_left()
+    #     if self.current_token in operations:
+    #         add_or_sub = self.pop_token()
+    #         right = parse_right()
+    #         return Term(add_or_sub, children=[left, right])
+    #     else:
+    #         return left
 
-    def parse_binary_operation(self, operations, parse_left, parse_right) -> Term:
-        left = parse_left()
-        if self.current_token in operations:
-            add_or_sub = self.pop_token()
-            right = parse_right()
-            return Term(add_or_sub, children=[left, right])
-        else:
-            return left
+    def parse_binary_operation(self, operations: list, parse_component: callable) -> Term:
+        """parses expression: A -> B { operation B}"""
+        result_term = parse_component()
+        while self.current_token in operations:
+            result_term = Term(self.pop_token(), children=[result_term, parse_component()])
+        return result_term
 
     def parse_sum(self) -> Term:
-        """S -> T | T+S | T-S."""
-        return self.parse_binary_operation([ADD, SUB], self.parse_product, self.parse_sum)
+        """S -> T { + T | - T}."""
+        return self.parse_binary_operation([ADD, SUB], self.parse_product)
 
     def parse_product(self) -> Term:
-        """T -> F | F*T | F/T. """
-        return self.parse_binary_operation([MUL, DIV], self.parse_power, self.parse_product)
+        """T -> F { * F | / F}. """
+        return self.parse_binary_operation([MUL, DIV], self.parse_power)
 
     def parse_power(self) -> Term:
-        """F -> E | E^E."""
-        # need to be explicit with brackets and write x^(x^x) or (x^x)^x
-        return self.parse_binary_operation([POW], self.parse_term, self.parse_term)
+        """F -> E { ^ E}."""
+        return self.parse_binary_operation([POW], self.parse_term)
 
     def parse_term(self) -> Term:
         """E -> num | var | (S) | sin(S) | log(S) | cos(S) | tan(S)."""
