@@ -9,7 +9,7 @@ def tokenize(text : str) -> list:
     tokens = []
     ind = 0
     while ind < len(text):
-
+        # TODO parse negative numbers
         if text[ind].isdigit():  # digit
             ind_joe = ind
             # will catch fragment of digits and commas,

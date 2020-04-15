@@ -1,4 +1,5 @@
 from functools import reduce
+import copy
 
 
 class Term:
@@ -14,3 +15,7 @@ class Term:
             return f"({self.label} " + reduce(lambda str1, str2: str1+" "+str2, (repr(child) for child in self.children)) + ")"
         else:
             return f"{self.label}"
+    #
+    # def copy(self):
+    #     """makes a copy of"""
+    #     return Term(self.label, [child.copy() for child in self.children])

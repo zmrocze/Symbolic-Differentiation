@@ -1,6 +1,7 @@
 from term import Term
 from symbols_table import *
 import numbers
+from copy import deepcopy
 
 """derivative rules expect a term to have 2 children with binary operation (e.g. *) and one when unary (e.g. sin) (obviously xd)
 ! but differentiations and simplifications return various number of children, 
@@ -25,12 +26,16 @@ def mul_derivative(term1: Term, rules) -> Term:
     """rule for differentiating a product:
     (uv)' = u'v + uv'"""
     child1, child2 = term1.children  # assumes binary tree
+    child1_cp, child2_cp = deepcopy(child1), deepcopy(child2)
     return Term(ADD, [Term(MUL, [derivative(child1, rules), child2]), Term(MUL, [child1, derivative(child2, rules)])])
 
 
 def div_derivative(term1: Term, rules) -> Term:
-    """rule for differentiating division (hardcore):
+    """rule for differentiating division:
     (u/v)' = ((u')*v - u*(v'))/v^2"""
+    child1, child2 = term1.children  # assumes binary tree
+    return Term(DIV, [Term(SUB, [Term(MUL, [derivative(child1, rules), child2]), Term(MUL, [child1, derivative(child2, rules)])]),
+                      Term(POW, [child2, Term(2)])])
 
 
 def sum_derivative(term1: Term, rules) -> Term:
@@ -41,7 +46,7 @@ def sum_derivative(term1: Term, rules) -> Term:
 
 
 def power_derivative(term1: Term, rules) -> Term:
-    """rule for differentiating a power:
+    """rule for differentiating a power (hardcore):
     (u^v)' = v'*log(u)*u^v + v*u'*u^(v-1)"""
     child1, child2 = term1.children  # assumes binary tree
     return Term(ADD,
@@ -76,5 +81,5 @@ def log_derivative(term1: Term, rules) -> Term:
 
 rules_for_differentiation = {MUL: mul_derivative, ADD: sum_derivative, SUB: sum_derivative,
                              COS: cos_derivative, SIN: sin_derivative, TAN: tan_derivative,
-                             POW: power_derivative, DIV: div_derivative ,LOG: log_derivative}
+                             POW: power_derivative, DIV: div_derivative, LOG: log_derivative}
 
