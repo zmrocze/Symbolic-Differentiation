@@ -1,4 +1,4 @@
-from symbols_table import *
+from symbolic_differentiation.symbols_table import *
 
 class ParsingException(Exception):
     pass

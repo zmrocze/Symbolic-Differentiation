@@ -1,8 +1,8 @@
 import operator
 import numbers
 
-from symbols_table import *
-from term import Term
+from symbolic_differentiation.symbols_table import *
+from symbolic_differentiation.term import Term
 
 """ A simple expression differentiated yields huge expression that needs to be simplified e.g. D(x/x) = (1*x-x*1)/x^2
     
@@ -26,7 +26,8 @@ from term import Term
 """
 
 
-def simplify(term1):
+def simplify(term1: Term) -> Term:
+    """ Returns term simplified with arithmetic rules. """
     term1 = preprocess(term1)
     term1 = do_simplifications(term1, rules_for_simplification)
     term1 = postprocess(term1)
@@ -86,7 +87,7 @@ def terms_equal(term1: Term, term2: Term, *terms) -> bool:
     return False
 
 
-def preprocess(term1) -> Term:
+def preprocess(term1: Term) -> Term:
     """ Change  1. a/b to a*b^(-1)
                 2. substraction to addition with *(-1) """
     if term1.label == SUB:
@@ -99,7 +100,7 @@ def preprocess(term1) -> Term:
         return Term(term1.label, [preprocess(child) for child in term1.children])
 
 
-def postprocess(term1) -> Term:
+def postprocess(term1: Term) -> Term:
     """ Change back 1. Multiplication by inverse back to division.
                     2. addition with negative coefficients back to subtraction. """
     if term1.label == ADD:

@@ -1,7 +1,7 @@
-from term import Term
-from symbols_table import *
+from symbolic_differentiation.term import Term
+from symbolic_differentiation.symbols_table import *
 import numbers
-from lexer import ParsingException
+from symbolic_differentiation.lexer import ParsingException, tokenize
 
 class InvalidToken(ParsingException):
     pass
@@ -103,8 +103,15 @@ class Parser:
             return Term(fun, children=[S])
 
 
+def parse(formula: str) -> Term:
+    tokens = tokenize(formula)
+    parser = Parser(tokens)
+    term = parser.parse()
+    return term
+
+
 if __name__ == "__main__":
-    from lexer import tokenize
+    from symbolic_differentiation.lexer import tokenize
 
     text = "(x^5+x*(5)+3.14^4)+5"
     tokens = tokenize(text)

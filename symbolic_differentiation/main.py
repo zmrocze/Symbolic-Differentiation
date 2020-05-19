@@ -1,21 +1,19 @@
-from simplification import simplify
-from printing import to_pretty_string
-from derivatives import derivative, rules_for_differentiation
-from lexer import tokenize, ParsingException
-from parse import Parser
+from symbolic_differentiation.simplification import simplify
+from symbolic_differentiation.printing import to_pretty_string
+from symbolic_differentiation.derivatives import derivative
+from symbolic_differentiation.lexer import ParsingException
+from symbolic_differentiation.parse import parse
 
 
 def main_loop():
     formula = input("enter function to differentiate: ")
     try:
-        tokens = tokenize(formula)
-        parser = Parser(tokens)
-        term1 = parser.parse()
+        term1 = parse(formula)
         # print(f"term tree: {term1}")
     except ParsingException as e:
         print(e)
     else:
-        term1_derivative = derivative(term1, rules_for_differentiation)
+        term1_derivative = derivative(term1)
         # print(f"derivative tree: {deriv_term1}")
         # print(to_pretty_string(deriv_term1))
         simplified_derivative = simplify(term1_derivative)

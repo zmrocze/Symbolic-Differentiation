@@ -1,4 +1,4 @@
-from symbols_table import *
+from symbolic_differentiation.symbols_table import *
 import numbers
 
 """ Module exports to_pretty_string() which takes Term and returns the expression as a string with brackets etc. """
@@ -44,7 +44,7 @@ def to_pretty_string(term1):
 
 
 if __name__ == "__main__":
-    from term import Term
+    from symbolic_differentiation.term import Term
     term = Term(ADD, [Term(SUB, [Term(3), Term(4)]), Term(SUB, [Term(SUB, [Term(POW, [Term(VAR), Term(ADD, [Term(1), Term(0)])]), Term(VAR)]), Term(MUL, [Term(3), Term(VAR)])])])
     formula = to_pretty_string(term)
     print(formula)
