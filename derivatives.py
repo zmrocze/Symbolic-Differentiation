@@ -1,17 +1,13 @@
 from term import Term
 from symbols_table import *
 import numbers
-from copy import deepcopy
 
-"""derivative rules expect a term to have 2 children with binary operation (e.g. *) and one when unary (e.g. sin) (obviously xd)
-! but differentiations and simplifications return various number of children, 
-! so that simplifications cannot be done in between different differentiation steps"""
+""" derivative rules expect a term to have 2 children with binary operation (e.g. *) and one when unary (e.g. sin) (obviously xd)
+    ! but differentiations and simplifications return various number of children, 
+    ! so that simplifications cannot be done in between different differentiation steps"""
 
 
 # rules should be a dict that is defined below these function definitions
-# i realized it doesn't really make sense to provide rules as a parameter
-# (because why would i ever want to swap those rules?)
-# but let it stay so
 def derivative(term1: Term, rules: dict) -> Term:
     """uses a rule which then loops to differentiate"""
     if isinstance(term1.label, numbers.Number):
@@ -26,7 +22,6 @@ def mul_derivative(term1: Term, rules) -> Term:
     """rule for differentiating a product:
     (uv)' = u'v + uv'"""
     child1, child2 = term1.children  # assumes binary tree
-    child1_cp, child2_cp = deepcopy(child1), deepcopy(child2)
     return Term(ADD, [Term(MUL, [derivative(child1, rules), child2]), Term(MUL, [child1, derivative(child2, rules)])])
 
 
@@ -55,22 +50,22 @@ def power_derivative(term1: Term, rules) -> Term:
 
 
 def sin_derivative(term1: Term, rules) -> Term:
-    """rule for differentating sinus:
+    """rule for differentiating sinus:
     (sin(u))' = cos(u)*u'"""
     return Term(MUL, [Term(COS, [term1.children[0]]), derivative(term1.children[0], rules)])
 
 
 def cos_derivative(term1: Term, rules) -> Term:
-    """rule for differentating cosinus:
-    (cos(u))' = -sin(u)*u'"""
+    """rule for differentiating cosinus:
+    (cos(u))' = -sin(u)*u'  """
     return Term(MUL, [Term(-1), Term(SIN, [term1.children[0]]), derivative(term1.children[0], rules)])
 
 
 def tan_derivative(term1: Term, rules) -> Term:
     """rule for differentiating tangens:
     (tan(u))' = u' + u'*(tan(u))^2"""
-    child_deriv = derivative(term1.children[0], rules)
-    return Term(ADD, [child_deriv, Term(MUL, [child_deriv, Term(POW, [Term(TAN, [Term(term1.children[0])]), Term(2)])])])
+    arg = Term.copy(term1.children[0])
+    return Term(ADD, [derivative(arg, rules), Term(MUL, [derivative(arg, rules), Term(POW, [term1, Term(2)])])])
 
 
 def log_derivative(term1: Term, rules) -> Term:

@@ -1,12 +1,12 @@
 from term import Term
 from symbols_table import *
 import numbers
+from lexer import ParsingException
 
-
-class InvalidToken(Exception):
+class InvalidToken(ParsingException):
     pass
 
-class InvalidExpression(Exception):
+class InvalidExpression(ParsingException):
     pass
 
 END = 'END OF TOKEN SEQUENCE'

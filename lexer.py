@@ -1,15 +1,20 @@
 from symbols_table import *
 
+class ParsingException(Exception):
+    pass
 
-class InvalidCharacter(Exception):
+class InvalidCharacter(ParsingException):
     pass
 
 
 def tokenize(text : str) -> list:
+    """ Reads a string char by char and returns a list of tokens.
+        e.g. "45+sin(x)   -->  [45, "sin", "(", "x", ")"]  """
     tokens = []
     ind = 0
     while ind < len(text):
         # TODO parse negative numbers
+        # ^ not gonna do ;)
         if text[ind].isdigit():  # digit
             ind_joe = ind
             # will catch fragment of digits and commas,
