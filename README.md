@@ -25,5 +25,5 @@ Simplify will simplify for example:
 3. ``5*sin(x)*log(5)/sin(x)^2`` to ``5*log(5)/sin(x)``
 
 But will not simplify:
-1. ``x^2+x/x`` to ``x+1``
+1. ``x/(x^2+x)`` to ``1/(x+1)``
 2. ``sin(0)`` to ``0``
