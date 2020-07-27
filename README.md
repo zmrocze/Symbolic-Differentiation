@@ -9,7 +9,7 @@ simplified = sd.simplify(derivative)
 print(sd.to_pretty_string(simplified))
 ```
 
-No libraries needed. See main.py for demo.
+No dependencies needed. See main.py for demo.
 # What works
 Arithmetic operations: ``+``, ``*``, ``/``, ``^``, ``-``.
 
