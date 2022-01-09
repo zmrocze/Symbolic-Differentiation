@@ -1,9 +1,13 @@
-from symbolic_differentiation.simplification import simplify
-from symbolic_differentiation.printing import to_pretty_string
-from symbolic_differentiation.derivatives import derivative
-from symbolic_differentiation.lexer import ParsingException
-from symbolic_differentiation.parse import parse
-
+# from simplification import simplify
+# from printing import to_pretty_string
+# from derivatives import derivative
+# from lexer import ParsingException
+# from parse import parse
+from simplification import simplify
+from printing import to_pretty_string
+from derivatives import derivative
+from lexer import ParsingException
+from parse import parse
 
 def main_loop():
     formula = input("enter function to differentiate: ")

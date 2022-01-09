@@ -1,5 +1,5 @@
-from symbolic_differentiation.term import Term
-from symbolic_differentiation.symbols_table import *
+from term import Term
+from symbols_table import *
 import numbers
 
 """ derivative rules expect a term to have 2 children with binary operation (e.g. *) and one when unary (e.g. sin) (obviously xd)

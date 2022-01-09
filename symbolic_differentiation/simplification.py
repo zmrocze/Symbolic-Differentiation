@@ -1,8 +1,8 @@
 import operator
 import numbers
 
-from symbolic_differentiation.symbols_table import *
-from symbolic_differentiation.term import Term
+from symbols_table import *
+from term import Term
 
 """ A simple expression differentiated yields huge expression that needs to be simplified e.g. D(x/x) = (1*x-x*1)/x^2
     

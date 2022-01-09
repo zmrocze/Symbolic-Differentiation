@@ -1,4 +1,4 @@
-from symbolic_differentiation.symbols_table import *
+from symbols_table import *
 import numbers
 
 """ Module exports to_pretty_string() which takes Term and returns the expression as a string with brackets etc. """
@@ -11,7 +11,9 @@ precedence = {ADD: 6, SUB: 6, MUL: 8, DIV: 8, POW: 10, SIN: 12, TAN: 12, COS: 12
 
 
 def to_string_with_precedence(term1, prec):
-    if term1.label == VAR or isinstance(term1.label, numbers.Number):
+    if isinstance(term1.label, numbers.Number) and term1.label < 0:
+        return '(' + str(term1.label) + ')'
+    elif term1.label == VAR or isinstance(term1.label, numbers.Number):
         return str(term1.label)
     elif term1.label in [SIN, COS, TAN, LOG]:
         return term1.label + OPEN_BR + to_string_with_precedence(term1.children[0], 0) + CLOSE_BR
@@ -44,7 +46,7 @@ def to_pretty_string(term1):
 
 
 if __name__ == "__main__":
-    from symbolic_differentiation.term import Term
+    from term import Term
     term = Term(ADD, [Term(SUB, [Term(3), Term(4)]), Term(SUB, [Term(SUB, [Term(POW, [Term(VAR), Term(ADD, [Term(1), Term(0)])]), Term(VAR)]), Term(MUL, [Term(3), Term(VAR)])])])
     formula = to_pretty_string(term)
     print(formula)
